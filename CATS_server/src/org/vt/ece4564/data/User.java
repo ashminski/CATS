@@ -56,4 +56,16 @@ public class User {
 		return key;
 	}
 	
+	/**
+	 * Returns user password
+	 * @return
+	 */
+	public String getPassword(){
+		return password;
+	}
+	
+	public Set<Key> getGroups(){
+		return groups;
+	}
+	
 }

@@ -59,5 +59,13 @@ public class Group {
 	public Key getKey(){
 		return key;
 	}
+	
+	/**
+	 * Returns group password
+	 * @return
+	 */
+	public String getPassword(){
+		return password;
+	}
 
 }
