@@ -20,7 +20,7 @@ public class Post {
 	@Persistent
 	private GeoPt GPSLocation; //location of user when posting
 	
-	public Post() {
+	public Post(Group g, User u, String post, long lat, long lon) {
 
 	}
 

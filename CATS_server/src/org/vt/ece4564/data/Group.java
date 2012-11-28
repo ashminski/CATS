@@ -8,8 +8,10 @@ import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.jdo.annotations.Unique;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 /**
  * This class models a group
@@ -24,15 +26,17 @@ public class Group {
     private Key key;
 	
 	@Persistent
+	@Unique
 	private String groupName; //User-entered name for group
 	
 	@Persistent
 	private String password; //password for group
 	
 	@Persistent
-	private User owner; //User that created group - only one who can delete
+	private String createdBy; //User that created group - only one who can delete
 	
 	@Persistent
+	@Unowned
 	private Set<Key> members; //Users that belong to this group
 	
 	@Persistent(mappedBy = "group")
@@ -44,12 +48,12 @@ public class Group {
 	 * @param pass Password for group
 	 * @param o user that created group
 	 */
-	public Group(String name, String pass, User o) {
+	public Group(String name, String pass) {
 		groupName = name;
 		password = pass;
-		owner = o;
+		//owner = o;
 		members = new HashSet<Key>();
-		members.add(o.getKey());
+		//members.add(o.getKey());
 	}
 	
 	/**
@@ -66,6 +70,18 @@ public class Group {
 	 */
 	public String getPassword(){
 		return password;
+	}
+	
+	public String getName(){
+		return groupName;
+	}
+	
+	public void addUser(User u){
+		members.add(u.getKey());
+	}
+	
+	public void addCreatedBy(String name){
+		createdBy = name;
 	}
 
 }

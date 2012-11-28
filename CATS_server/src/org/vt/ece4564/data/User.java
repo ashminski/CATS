@@ -11,6 +11,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 /**
  * This class models a user
@@ -34,10 +35,11 @@ public class User {
 	private String phoneNumber; //user phone number, used for SMS messages
 	
 	@Persistent
+	@Unowned
 	private Set<Key> groups; //set of groups user is in
 	
-	@Persistent(mappedBy = "user")
-	private List<Post> posts;
+	//@Persistent(mappedBy = "user")
+	//private List<Post> posts;
 	
 	
 	public User(String name, String pass, String num) {
@@ -45,7 +47,7 @@ public class User {
 		password = pass;
 		phoneNumber = num;
 		groups = new HashSet<Key>();
-		posts = new ArrayList<Post>();
+		//posts = new ArrayList<Post>();
 	}
 
 	/**
@@ -68,4 +70,15 @@ public class User {
 		return groups;
 	}
 	
+	public void addGroup(Group g){
+		groups.add(g.getKey());
+	}
+	
+	/**
+	 * Returns username
+	 * @return
+	 */
+	public String getUsername(){
+		return username;
+	}
 }
