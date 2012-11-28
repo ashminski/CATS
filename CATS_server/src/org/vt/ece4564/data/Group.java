@@ -39,8 +39,8 @@ public class Group {
 	@Unowned
 	private Set<Key> members; //Users that belong to this group
 	
-	@Persistent(mappedBy = "group")
-	private List<Post> posts;
+	@Persistent
+	private Set<Key> posts; //Posts in this group
 	
 	/**
 	 * Constructor
@@ -54,6 +54,7 @@ public class Group {
 		//owner = o;
 		members = new HashSet<Key>();
 		//members.add(o.getKey());
+		posts = new HashSet<Key>();
 	}
 	
 	/**
@@ -72,16 +73,44 @@ public class Group {
 		return password;
 	}
 	
+	/**
+	 * Returns group name
+	 * @return
+	 */
 	public String getName(){
 		return groupName;
 	}
 	
+	/**
+	 * Adds user as a member of this group
+	 * @param u
+	 */
 	public void addUser(User u){
 		members.add(u.getKey());
 	}
 	
-	public void addCreatedBy(String name){
+	/**
+	 * Sets user who created group
+	 * @param name
+	 */
+	public void setCreatedBy(String name){
 		createdBy = name;
+	}
+	
+	/**
+	 * Adds post to group
+	 * @param p
+	 */
+	public void addPost(Post p){
+		posts.add(p.getKey());
+	}
+	
+	/**
+	 * Returns keys to posts in this group
+	 * @return
+	 */
+	public Set<Key> getPosts(){
+		return posts;
 	}
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.vt.ece4564.data.Group;
+import org.vt.ece4564.data.Post;
 import org.vt.ece4564.data.User;
 
 import com.google.appengine.api.datastore.Key;
@@ -20,10 +21,6 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 @Controller
 public class CATSController {
-
-	public CATSController() {
-		// TODO Auto-generated constructor stub
-	}
 
 	//validate user password
 	@RequestMapping("/user/validate")
@@ -86,7 +83,7 @@ public class CATSController {
 		for(Key k : u.getGroups()){
 			Group g = PMF.get().getPersistenceManager().getObjectById(Group.class, k);
 			JSONObject jo = new JSONObject();
-			jo.put("name", g.getName());
+			jo.put("groupName", g.getName());
 			j.put(jo);
 		}
 		
@@ -140,6 +137,30 @@ public class CATSController {
 	}
 	
 	//return posts in group
+	@RequestMapping("/group/posts")
+	public void getPosts(@RequestParam("groupname") String name, HttpServletResponse response) 
+			throws JSONException, IOException{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
+		q.setUnique(true);
+		q.declareParameters("String gname");
+		Group g = (Group)q.execute(name);
+		
+		JSONArray j = new JSONArray();
+		for(Key k : g.getPosts()){
+			Post p = PMF.get().getPersistenceManager().getObjectById(Post.class, k);
+			JSONObject jo = new JSONObject();
+			jo.put("groupName", g.getName());
+			jo.put("postedBy", p.getPostedBy());
+			jo.put("latitude", p.getCoordinates().getLatitude());
+			jo.put("longitude", p.getCoordinates().getLongitude());
+			jo.put("postBody", p.getText());
+			jo.put("postedAt", p.getDatePosted().toString());
+			j.put(jo);
+		}
+		response.setContentType("application/json");
+		response.getWriter().write(j.toString());
+	}
 	
 	//add new group
 	@RequestMapping("/group/new")
@@ -160,7 +181,7 @@ public class CATSController {
 			pm.makePersistent(g);
 			u.addGroup(g);
 			g.addUser(u);
-			g.addCreatedBy(u.getUsername());
+			g.setCreatedBy(u.getUsername());
 			
 			response.setContentType("text/plain");
 			response.getWriter().write("Success");
@@ -172,5 +193,27 @@ public class CATSController {
 	}
 	
 	//add new post
+	@RequestMapping("/group/post")
+	public void addPost(@RequestParam("username") String user, @RequestParam("groupName") String group,
+			@RequestParam("text") String text, @RequestParam("lat") long lat, 
+			@RequestParam("lon") long lon, HttpServletResponse response){
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
+		q.declareParameters("String gname");
+		q.setUnique(true);
+		Group g = (Group) q.execute(group);
+		
+		q = pm.newQuery("select from " + User.class.getName() + " where username==name");
+		q.declareParameters("String name");
+		q.setUnique(true);
+		User u = (User) q.execute(user);
+		
+		Post p = new Post(u.getUsername(),text, lat, lon);
+		pm.makePersistent(p);
+		
+		u.addPost(p);
+		p.setGroup(g);
+		g.addPost(p);
+	}
 	
 }
