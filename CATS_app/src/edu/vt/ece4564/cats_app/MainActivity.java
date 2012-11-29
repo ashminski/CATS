@@ -4,11 +4,14 @@ import java.util.concurrent.ExecutionException;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
@@ -57,13 +60,26 @@ public class MainActivity extends Activity implements OnClickListener {
 					// TODO Send to next activity
 				}
 				else{
-					// TODO Pop up dialog saying user is a tard
+					AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
+					builder.setMessage("Your username and/or password is incorrect.")
+					.setTitle("Incorrect Credentials");
+					builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							dialog.cancel();
+						}
+					});
+					builder.create();
+					AlertDialog dialog = builder.show();
 				}
 			} catch (InterruptedException e) {
-				// TODO Pop up dialog informing user of issue
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				// TODO Pop up dialog informing user of issue
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+				toast.show();
 				e.printStackTrace();
 			}
 		}
@@ -86,16 +102,24 @@ public class MainActivity extends Activity implements OnClickListener {
 			try {
 				String result = request.get();
 				if(result.equals("Success")){
-					// TODO Send to next activity
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"YAY!",Toast.LENGTH_SHORT);
+					toast.show();
 				}
 				else{
-					// TODO Pop up dialog informing user of issue
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+					toast.show();
 				}
 			} catch (InterruptedException e) {
-				// TODO Pop up dialog informing user of issue
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				// TODO Pop up dialog informing user of issue
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+				toast.show();
 				e.printStackTrace();
 			}
 		}
