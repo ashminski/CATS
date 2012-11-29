@@ -27,13 +27,25 @@
         android:hint="Password"
         android:inputType="textPassword" />
 
+    <EditText
+        android:id="@+id/phoneField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/usernameField"
+        android:layout_below="@+id/passwordField"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="Phone Number"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/passwordField"
+        android:layout_below="@+id/phoneField"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="20dp"
         android:text="Login" />
 
     <Button
@@ -42,7 +54,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:text="Create Account" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/newAccountButton"
+        android:layout_alignBottom="@+id/newAccountButton"
+        android:layout_centerHorizontal="true"
+        android:text="Submit"
+        android:visibility="gone" />
 
 </RelativeLayout>
