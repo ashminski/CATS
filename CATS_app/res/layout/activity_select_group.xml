@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ListView
+        android:id="@+id/groupListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="200dp" >
+    </ListView>
+
+    <EditText
+        android:id="@+id/groupNameBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="153dp"
+        android:layout_marginLeft="92dp"
+        android:ems="10"
+        android:hint="Group Name" >
+
+        <requestFocus />
+    </EditText>
+
+    <EditText
+        android:id="@+id/groupPassBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/groupNameBox"
+        android:layout_alignTop="@+id/groupNameBox"
+        android:layout_marginTop="56dp"
+        android:ems="10"
+        android:hint="Group Password"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/joinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/groupNameBox"
+        android:layout_alignBottom="@+id/groupNameBox"
+        android:text="Join Group:" />
+
+    <Button
+        android:id="@+id/submitGroupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/groupNameBox"
+        android:layout_below="@+id/groupPassBox"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="24dp"
+        android:text="Submit" />
+
+    <Button
+        android:id="@+id/createGroupButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/submitButton"
+        android:layout_alignBottom="@+id/submitButton"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="30dp"
+        android:text="Create Group" />
+
+</RelativeLayout>
