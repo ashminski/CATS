@@ -35,8 +35,8 @@
         android:layout_below="@+id/passwordField"
         android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Phone Number"
         android:inputType="phone"
-        android:text="Phone Number"
         android:visibility="gone" />
 
     <Button
@@ -61,10 +61,10 @@
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/newAccountButton"
-        android:layout_alignBottom="@+id/newAccountButton"
+        android:layout_below="@id/phoneField"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:text="Submit"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
 </RelativeLayout>

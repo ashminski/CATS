@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +37,7 @@ public class MainActivity extends Activity implements OnClickListener {
         
         loginButton.setOnClickListener(this);
         createAccountButton.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
     }
 
     @Override
@@ -51,25 +53,22 @@ public class MainActivity extends Activity implements OnClickListener {
 			String username = usernameField.getText().toString();
 			String password = passwordField.getText().toString();
 			String url = "http://chatallthestuff.appspot.com/user/validate?username="
-					+ username + "&pass=" + password;
+					+ username.trim() + "&pass=" + password;
 			SendRequestTask request = new SendRequestTask();
 			request.execute(url);
 			try {
 				String result = request.get();
+				Log.i("login", result);
 				if(result.equals("Valid")){
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							result,Toast.LENGTH_SHORT);
+					toast.show();
 					// TODO Send to next activity
 				}
 				else{
-					AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext());
-					builder.setMessage("Your username and/or password is incorrect.")
-					.setTitle("Incorrect Credentials");
-					builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int id) {
-							dialog.cancel();
-						}
-					});
-					builder.create();
-					AlertDialog dialog = builder.show();
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
+					toast.show();
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
@@ -87,6 +86,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			//prompt for phone number
 			phoneField.setVisibility(View.VISIBLE);
 			createAccountButton.setVisibility(View.GONE);
+			loginButton.setVisibility(View.GONE);
 			submitButton.setVisibility(View.VISIBLE);
 		}
 		else if(arg0.getId() == R.id.submitButton){
@@ -101,24 +101,25 @@ public class MainActivity extends Activity implements OnClickListener {
 			request.execute(url);
 			try {
 				String result = request.get();
-				if(result.equals("Success")){
+				Log.i("create", result);
+				if(result.contains("Success")){
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"YAY!",Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else{
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+							"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+						"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+						"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
 				toast.show();
 				e.printStackTrace();
 			}
