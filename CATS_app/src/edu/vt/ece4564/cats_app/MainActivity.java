@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -61,9 +62,12 @@ public class MainActivity extends Activity implements OnClickListener {
 				Log.i("login", result);
 				if(result.equals("Valid")){
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							result,Toast.LENGTH_SHORT);
+							"Successful login",Toast.LENGTH_SHORT);
 					toast.show();
-					// TODO Send to next activity
+					//User is logged in, pass to group screen
+					Intent i = new Intent(this, SelectGroupActivity.class);
+					i.putExtra("username", username.trim());
+					startActivity(i);
 				}
 				else{
 					Toast toast = Toast.makeText(getApplicationContext(), 
