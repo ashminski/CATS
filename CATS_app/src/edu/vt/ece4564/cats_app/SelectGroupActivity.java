@@ -16,43 +16,48 @@ import android.content.Intent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 public class SelectGroupActivity extends Activity implements OnClickListener {
 
 	private ListView groupListView;
-	private EditText groupNameBox;
-	private EditText groupPassBox;
+	private EditText groupNameField;
+	private EditText groupPassField;
 	private Button submitGroupButton;
 	private Button createGroupButton;
 	private String username;
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_group);
-        
-        Intent i = getIntent();
-        username = i.getStringExtra("username");
-        
-        groupListView = (ListView) findViewById(R.id.groupListView);
-        groupNameBox = (EditText) findViewById(R.id.groupNameBox);
-        groupPassBox = (EditText) findViewById(R.id.groupPassBox);
-        submitGroupButton = (Button) findViewById(R.id.submitGroupButton);
-        createGroupButton = (Button) findViewById(R.id.createGroupButton);
-        
-        //TODO populate groupListView with user's groups
-        String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
-        SendRequestTask request = new SendRequestTask();
-        request.execute(url);
-        try {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_select_group);
+
+		Intent i = getIntent();
+		username = i.getStringExtra("username");
+
+		groupListView = (ListView) findViewById(R.id.groupListView);
+		groupNameField = (EditText) findViewById(R.id.groupNameBox);
+		groupPassField = (EditText) findViewById(R.id.groupPassBox);
+		submitGroupButton = (Button) findViewById(R.id.submitGroupButton);
+		createGroupButton = (Button) findViewById(R.id.createGroupButton);
+		
+		submitGroupButton.setOnClickListener(this);
+		createGroupButton.setOnClickListener(this);
+
+		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
+		SendRequestTask request = new SendRequestTask();
+		request.execute(url);
+		try {
 			String result = request.get();
-			
+
 			JSONArray j = new JSONArray(result);
-			
+
 			List<Map<String,String>> places = new ArrayList<Map<String,String>>();
 			for(int k = 0; k < j.length(); k++){
 				JSONObject jo = (JSONObject) j.get(k);
@@ -60,16 +65,31 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 				row.put("id", jo.getString("groupName")); //Big text is group name
 				places.add(row);
 			}
-			SimpleAdapter a = new SimpleAdapter(
-					this,
-					places,
-					android.R.layout.simple_list_item_2,
-					new String[] {"id", ""},
-					new int[] {android.R.id.text1,android.R.id.text2});
-			groupListView.setAdapter(a);
-			//TODO Somewhere near here need to add onclicklistener for each listitem
-			//On click, send to activity that displays posts in group
-			
+			if(places.isEmpty()){
+				groupListView.setVisibility(View.GONE);
+			}
+			else{
+				SimpleAdapter a = new SimpleAdapter(
+						this,
+						places,
+						android.R.layout.simple_list_item_2,
+						new String[] {"id", ""},
+						new int[] {android.R.id.text1,android.R.id.text2});
+				groupListView.setAdapter(a);
+				groupListView.setOnItemClickListener(new OnItemClickListener(){
+
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1,
+							int position, long id) {
+						// TODO On click, send to activity that displays posts in group
+						Toast toast = Toast.makeText(getApplicationContext(), 
+								"position: " + position,Toast.LENGTH_SHORT);
+						toast.show();
+					}
+
+				});
+			}
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -80,22 +100,55 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_select_group, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_select_group, menu);
+		return true;
+	}
 
 	@Override
 	public void onClick(View arg0) {
 		if(arg0.getId() == R.id.submitGroupButton){
 			//TODO validate group name & pass
-			//TODO send to group viewing activity for that group
+			String groupName = groupNameField.getText().toString().trim();
+			String groupPassword = groupPassField.getText().toString();
+
+
+			//TODO add user to group
+			String url = "http://chatallthestuff.appspot.com/group/add?groupname=" +
+					groupName + "&password=" + groupPassword + "&username=" + username;
+			SendRequestTask request = new SendRequestTask();
+			request.execute(url);
+			try {
+				String result = request.get();
+				if(result.contains("Valid")){
+					//TODO send to group viewing activity for that group
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"YaY!",Toast.LENGTH_SHORT);
+					toast.show();
+				}
+				else{
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Sorry, you couldn't be added to that group.",Toast.LENGTH_SHORT);
+					toast.show();
+				}
+			} catch (InterruptedException e) {
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+				toast.show();
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+				toast.show();
+				e.printStackTrace();
+			}
 		}
 		else if(arg0.getId() == R.id.createGroupButton){
 			// TODO send to create screen/dialog
 		}
+
 	}
 }

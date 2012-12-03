@@ -60,7 +60,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			try {
 				String result = request.get();
 				Log.i("login", result);
-				if(result.equals("Valid")){
+				if(result.contains("Valid")){
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Successful login",Toast.LENGTH_SHORT);
 					toast.show();
@@ -76,12 +76,12 @@ public class MainActivity extends Activity implements OnClickListener {
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again",Toast.LENGTH_SHORT);
+						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.show();
 				e.printStackTrace();
 			}

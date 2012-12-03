@@ -37,14 +37,6 @@
         android:hint="Group Password"
         android:inputType="textPassword" />
 
-    <TextView
-        android:id="@+id/joinGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/groupNameBox"
-        android:layout_alignBottom="@+id/groupNameBox"
-        android:text="Join Group:" />
-
     <Button
         android:id="@+id/submitGroupButton"
         android:layout_width="wrap_content"
@@ -59,10 +51,19 @@
         android:id="@+id/createGroupButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/submitButton"
-        android:layout_alignBottom="@+id/submitButton"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="30dp"
+        android:layout_alignBaseline="@+id/submitGroupButton"
+        android:layout_alignBottom="@+id/submitGroupButton"
+        android:layout_marginRight="34dp"
+        android:layout_toLeftOf="@+id/submitGroupButton"
         android:text="Create Group" />
+
+    <TextView
+        android:id="@+id/joinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/groupNameBox"
+        android:layout_alignBottom="@+id/groupNameBox"
+        android:layout_toLeftOf="@+id/groupPassBox"
+        android:text="Join Group:" />
 
 </RelativeLayout>
