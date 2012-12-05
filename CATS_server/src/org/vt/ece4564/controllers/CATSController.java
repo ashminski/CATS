@@ -128,6 +128,7 @@ public class CATSController {
 			q.declareParameters("String user");
 			q.setUnique(true);
 			User u = (User) q.execute(username);
+			u.addGroup(g);
 			g.addUser(u);
 			response.getWriter().write("Valid");
 		}
