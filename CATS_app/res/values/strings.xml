@@ -6,5 +6,6 @@
     <string name="title_activity_main">CATS</string>
     <string name="title_activity_select_group">SelectGroupActivity</string>
     <string name="title_activity_show_posts">ShowPostsActivity</string>
+    <string name="title_activity_new_post">CATS</string>
 
 </resources>

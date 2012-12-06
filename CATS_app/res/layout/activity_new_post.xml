@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <EditText
+        android:id="@+id/postTextField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:hint="Enter post here"
+        android:inputType="textMultiLine"
+        android:minLines="5" />
+
+    <CheckBox
+        android:id="@+id/smsCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/postTextField"
+        android:layout_alignRight="@+id/postTextField"
+        android:layout_below="@+id/postTextField"
+        android:layout_marginTop="24dp"
+        android:text="Send to members by SMS" />
+
+    <Button
+        android:id="@+id/submitPostButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/smsCheckBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="Post" />
+
+</RelativeLayout>
