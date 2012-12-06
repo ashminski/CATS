@@ -13,9 +13,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ShowPostsActivity extends Activity {
 
@@ -38,13 +40,41 @@ public class ShowPostsActivity extends Activity {
 		String groupName = i.getStringExtra("groupName");
 		
 		//TODO add spinner with other group names
-		
-		//TODO send request with group name
-		String url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + groupName;
+		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
 		SendRequestTask request = new SendRequestTask();
 		request.execute(url);
-		//TODO parse json from return, put into Post objects
 		String result;
+		try {
+			result = request.get();
+			JSONArray j = new JSONArray(result);
+			List<String> groupNames = new ArrayList<String>();
+			for(int k = 0; k < j.length(); k++){
+				JSONObject jo = (JSONObject) j.get(k);
+				groupNames.add(jo.getString("groupName"));
+			}
+			ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+					groupNames);
+			groupListSpinner.setAdapter(spinAdapter);
+		} catch (InterruptedException e1) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.show();
+			e1.printStackTrace();
+		} catch (ExecutionException e1) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.show();
+			e1.printStackTrace();
+		} catch (JSONException e) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.show();
+			e.printStackTrace();
+		}
+		
+		url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + groupName;
+		request = new SendRequestTask();
+		request.execute(url);
 		try {
 			result = request.get();
 			Log.i("posts", result);
@@ -57,18 +87,23 @@ public class ShowPostsActivity extends Activity {
 				posts.add(p);
 			}
 			
-			//TODO build list
 			MyAdapter adapter = new MyAdapter(this, posts);
 			postListView.setAdapter(adapter);
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts.",Toast.LENGTH_SHORT);
+			toast.show();
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts.",Toast.LENGTH_SHORT);
+			toast.show();
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts.",Toast.LENGTH_SHORT);
+			toast.show();
 			e.printStackTrace();
 		}
 		

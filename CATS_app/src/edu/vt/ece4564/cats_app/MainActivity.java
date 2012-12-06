@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,16 +73,19 @@ public class MainActivity extends Activity implements OnClickListener {
 				else{
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
+					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			}
@@ -101,6 +105,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if(username.isEmpty() || password.isEmpty() || number.isEmpty()){
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please fill out all fields.",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				return;
 			}
@@ -120,16 +125,19 @@ public class MainActivity extends Activity implements OnClickListener {
 				else{
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			}
