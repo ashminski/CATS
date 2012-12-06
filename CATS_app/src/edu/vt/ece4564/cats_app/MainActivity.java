@@ -98,6 +98,12 @@ public class MainActivity extends Activity implements OnClickListener {
 			String username = usernameField.getText().toString();
 			String password = passwordField.getText().toString();
 			String number = phoneField.getText().toString();
+			if(username.isEmpty() || password.isEmpty() || number.isEmpty()){
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Please fill out all fields.",Toast.LENGTH_SHORT);
+				toast.show();
+				return;
+			}
 			
 			String url = "http://chatallthestuff.appspot.com/user/new?username=" +
 					username + "&password=" + password + "&number=" + number;
@@ -107,9 +113,9 @@ public class MainActivity extends Activity implements OnClickListener {
 				String result = request.get();
 				Log.i("create", result);
 				if(result.contains("Success")){
-					Toast toast = Toast.makeText(getApplicationContext(), 
-							"YAY!",Toast.LENGTH_SHORT);
-					toast.show();
+					Intent i = new Intent(this, SelectGroupActivity.class);
+					i.putExtra("username", username.trim());
+					startActivity(i);
 				}
 				else{
 					Toast toast = Toast.makeText(getApplicationContext(), 

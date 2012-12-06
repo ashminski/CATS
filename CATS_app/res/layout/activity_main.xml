@@ -37,7 +37,8 @@
         android:ems="10"
         android:hint="Phone Number"
         android:inputType="phone"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:maxLength="10" />
 
     <Button
         android:id="@+id/loginButton"

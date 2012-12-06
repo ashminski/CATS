@@ -127,10 +127,10 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 			try {
 				String result = request.get();
 				if(result.contains("Valid")){
-					//TODO send to group viewing activity for that group
-					Toast toast = Toast.makeText(getApplicationContext(), 
-							"YaY!",Toast.LENGTH_SHORT);
-					toast.show();
+					Intent postIntent = new Intent(this,ShowPostsActivity.class);
+					postIntent.putExtra("username", username);
+					postIntent.putExtra("groupName", groupName);
+					startActivity(postIntent);
 				}
 				else if(result.contains("Duplicate")){
 					Toast toast = Toast.makeText(getApplicationContext(), 
