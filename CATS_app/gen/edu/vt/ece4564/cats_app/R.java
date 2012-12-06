@@ -15,21 +15,23 @@ public final class R {
         public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
-        public static final int LinearLayout01=0x7f07000d;
+        public static final int LinearLayout01=0x7f07000f;
         public static final int createGroupButton=0x7f07000a;
-        public static final int gpsInfo=0x7f070010;
+        public static final int gpsInfo=0x7f070012;
+        public static final int groupListSpinner=0x7f07000e;
         public static final int groupListView=0x7f070006;
         public static final int groupNameBox=0x7f070007;
         public static final int groupPassBox=0x7f070008;
         public static final int joinGroup=0x7f07000b;
         public static final int loginButton=0x7f070003;
-        public static final int menu_settings=0x7f070011;
+        public static final int menu_settings=0x7f070013;
         public static final int newAccountButton=0x7f070004;
         public static final int newPostButton=0x7f07000c;
         public static final int passwordField=0x7f070001;
         public static final int phoneField=0x7f070002;
-        public static final int postText=0x7f07000e;
-        public static final int postedBy=0x7f07000f;
+        public static final int postListView=0x7f07000d;
+        public static final int postText=0x7f070010;
+        public static final int postedBy=0x7f070011;
         public static final int submitButton=0x7f070005;
         public static final int submitGroupButton=0x7f070009;
         public static final int usernameField=0x7f070000;
@@ -38,6 +40,7 @@ public final class R {
         public static final int activity_main=0x7f030000;
         public static final int activity_select_group=0x7f030001;
         public static final int activity_show_posts=0x7f030002;
+        public static final int post_row=0x7f030003;
     }
     public static final class menu {
         public static final int activity_main=0x7f060000;

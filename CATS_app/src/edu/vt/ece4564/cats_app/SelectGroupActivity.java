@@ -58,7 +58,7 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 
 			JSONArray j = new JSONArray(result);
 
-			List<Map<String,String>> places = new ArrayList<Map<String,String>>();
+			final List<Map<String,String>> places = new ArrayList<Map<String,String>>();
 			for(int k = 0; k < j.length(); k++){
 				JSONObject jo = (JSONObject) j.get(k);
 				Map<String,String> row = new HashMap<String, String>();
@@ -82,9 +82,14 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long id) {
 						// TODO On click, send to activity that displays posts in group
-						Toast toast = Toast.makeText(getApplicationContext(), 
+						Intent postIntent = new Intent(arg1.getContext(),ShowPostsActivity.class);
+						//postIntent.putExtra("groupName",);
+						postIntent.putExtra("username", username);
+						postIntent.putExtra("groupName",places.get(position).get("id"));
+						startActivity(postIntent);
+						/*Toast toast = Toast.makeText(getApplicationContext(), 
 								"position: " + position,Toast.LENGTH_SHORT);
-						toast.show();
+						toast.show();*/
 					}
 
 				});

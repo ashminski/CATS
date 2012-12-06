@@ -41,7 +41,7 @@ public class MyAdapter extends BaseAdapter {
 		if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.id.LinearLayout01, null);
+            convertView = inflater.inflate(R.layout.post_row, null);
         }
 
 		TextView text = (TextView) convertView.findViewById(R.id.postText);
