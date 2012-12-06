@@ -7,26 +7,26 @@
         android:id="@+id/newPostButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
         android:text="Add New Post" />
 
-    <LinearLayout android:id="@+id/LinearLayout01"
-        android:layout_width="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:paddingLeft="10sp" android:paddingRight="10sp"
+    <ListView
+        android:id="@+id/postListView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:paddingTop="2sp">
-        <TextView android:layout_height="wrap_content"
-                android:layout_width="fill_parent" android:id="@+id/postText"
-                android:typeface="sans" android:textSize="16sp"></TextView>
-        <TextView android:id="@+id/postedBy" android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-				android:textSize="13sp"></TextView>
-        <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/gpsInfo" android:textSize="13sp"></TextView>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:layout_marginTop="20dp" >
 
-	</LinearLayout>
+    </ListView>
 
+    <Spinner
+        android:id="@+id/groupListSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>
