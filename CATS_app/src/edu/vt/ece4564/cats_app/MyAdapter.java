@@ -36,7 +36,6 @@ public class MyAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup viewGroup) {
-		// TODO Auto-generated method stub
 		Post p = posts.get(position);
 		if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
@@ -48,10 +47,10 @@ public class MyAdapter extends BaseAdapter {
         text.setText(p.getText());
 
         TextView author = (TextView) convertView.findViewById(R.id.postedBy);
-        author.setText(p.getPostedBy());
+        author.setText("Posted by: " + p.getPostedBy() + " on " + p.getDatePosted());
 
         TextView location = (TextView) convertView.findViewById(R.id.gpsInfo);
-        location.setText(p.getCoordinates());
+        location.setText("Posted at: " + p.getCoordinates());
        
 
         return convertView;

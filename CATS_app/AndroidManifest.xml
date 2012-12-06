@@ -25,12 +25,12 @@
         </activity>
         <activity
             android:name=".SelectGroupActivity"
-            android:label="@string/title_activity_select_group"
+            android:label="@string/title_activity_main"
             android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
             android:name=".ShowPostsActivity"
-            android:label="@string/title_activity_show_posts" >
+            android:label="@string/title_activity_main" >
         </activity>
     </application>
 

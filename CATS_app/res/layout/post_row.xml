@@ -7,11 +7,11 @@
     android:layout_marginTop="20dp"
     android:paddingLeft="10sp"
     android:paddingRight="10sp"
-    android:paddingTop="2sp" >
+    android:paddingTop="10sp" >
 
     <TextView android:layout_height="wrap_content"
         android:layout_width="fill_parent" android:id="@+id/postText"
-        android:typeface="sans" android:textSize="16sp"></TextView>
+        android:typeface="sans" android:textSize="20sp"></TextView>
     <TextView android:id="@+id/postedBy" android:layout_width="wrap_content"
         android:layout_height="wrap_content" android:textSize="13sp"></TextView>
     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
