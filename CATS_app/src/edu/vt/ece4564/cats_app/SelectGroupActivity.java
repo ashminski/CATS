@@ -63,7 +63,7 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 				JSONObject jo = (JSONObject) j.get(k);
 				Map<String,String> row = new HashMap<String, String>();
 				row.put("id", jo.getString("groupName")); //Big text is group name
-				places.add(row);
+				places.add(row); //TODO small text = date/time of last posting?
 			}
 			if(places.isEmpty()){
 				groupListView.setVisibility(View.GONE);
@@ -111,12 +111,10 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		if(arg0.getId() == R.id.submitGroupButton){
-			//TODO validate group name & pass
+
 			String groupName = groupNameField.getText().toString().trim();
 			String groupPassword = groupPassField.getText().toString();
 
-
-			//TODO add user to group
 			String url = "http://chatallthestuff.appspot.com/group/add?groupname=" +
 					groupName + "&password=" + groupPassword + "&username=" + username;
 			SendRequestTask request = new SendRequestTask();
@@ -127,6 +125,11 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 					//TODO send to group viewing activity for that group
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"YaY!",Toast.LENGTH_SHORT);
+					toast.show();
+				}
+				else if(result.contains("Duplicate")){
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Sorry, you are already a member of that group.",Toast.LENGTH_SHORT);
 					toast.show();
 				}
 				else{

@@ -128,6 +128,10 @@ public class CATSController {
 			q.declareParameters("String user");
 			q.setUnique(true);
 			User u = (User) q.execute(username);
+			if(g.getMembers().contains(u.getKey())){
+				response.getWriter().write("Duplicate");
+				return;
+			}
 			u.addGroup(g);
 			g.addUser(u);
 			response.getWriter().write("Valid");

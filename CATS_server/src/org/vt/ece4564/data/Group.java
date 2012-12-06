@@ -112,5 +112,13 @@ public class Group {
 	public Set<Key> getPosts(){
 		return posts;
 	}
+	
+	/**
+	 * Returns keys to users in this group
+	 * @return
+	 */
+	public Set<Key> getMembers(){
+		return members;
+	}
 
 }

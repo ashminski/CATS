@@ -3,7 +3,8 @@
     <string name="app_name">CATS</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">CATS</string>
     <string name="title_activity_select_group">SelectGroupActivity</string>
+    <string name="title_activity_show_posts">ShowPostsActivity</string>
 
 </resources>
