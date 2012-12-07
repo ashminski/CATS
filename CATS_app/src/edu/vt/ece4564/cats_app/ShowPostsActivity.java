@@ -25,6 +25,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
 
 	private Button newPostButton;
 	private String username;
+	private String groupName;
 	private Spinner groupListSpinner;
 	private ListView postListView;
 	
@@ -39,7 +40,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
         
         Intent i = getIntent();
 		username = i.getStringExtra("username");
-		String groupName = i.getStringExtra("groupName");
+		groupName = i.getStringExtra("groupName");
 		
 		//TODO make sure spinner is highlighting current group
 		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
@@ -123,6 +124,9 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
 	@Override
 	public void onClick(View arg0) {
 		// TODO send intent to new post activity
-		
+		Intent i = new Intent(this, NewPostActivity.class);
+		i.putExtra("username", username);
+		i.putExtra("groupName", groupName);
+		startActivity(i);
 	}
 }
