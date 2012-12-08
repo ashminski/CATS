@@ -1,11 +1,11 @@
 package edu.vt.ece4564.cats_app;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.concurrent.ExecutionException;
 
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
-	
+
 	private EditText usernameField;
 	private EditText passwordField;
 	private EditText phoneField;
@@ -25,28 +25,28 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button createAccountButton;
 	private Button submitButton;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        usernameField = (EditText) findViewById(R.id.usernameField);
-        passwordField = (EditText) findViewById(R.id.passwordField);
-        phoneField = (EditText) findViewById(R.id.phoneField);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        createAccountButton = (Button) findViewById(R.id.newAccountButton);
-        submitButton = (Button) findViewById(R.id.submitButton);
-        
-        loginButton.setOnClickListener(this);
-        createAccountButton.setOnClickListener(this);
-        submitButton.setOnClickListener(this);
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
+		usernameField = (EditText) findViewById(R.id.usernameField);
+		passwordField = (EditText) findViewById(R.id.passwordField);
+		phoneField = (EditText) findViewById(R.id.phoneField);
+		loginButton = (Button) findViewById(R.id.loginButton);
+		createAccountButton = (Button) findViewById(R.id.newAccountButton);
+		submitButton = (Button) findViewById(R.id.submitButton);
+
+		loginButton.setOnClickListener(this);
+		createAccountButton.setOnClickListener(this);
+		submitButton.setOnClickListener(this);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_main, menu);
+		return true;
+	}
 
 	@Override
 	public void onClick(View arg0) {
@@ -99,7 +99,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		else if(arg0.getId() == R.id.submitButton){
 			//save new account, go to next activity
-			String username = usernameField.getText().toString();
+			String username = usernameField.getText().toString().trim();
 			String password = passwordField.getText().toString();
 			String number = phoneField.getText().toString();
 			if(username.isEmpty() || password.isEmpty() || number.isEmpty()){
@@ -109,37 +109,45 @@ public class MainActivity extends Activity implements OnClickListener {
 				toast.show();
 				return;
 			}
-			
-			String url = "http://chatallthestuff.appspot.com/user/new?username=" +
-					username + "&password=" + password + "&number=" + number;
-			SendRequestTask request = new SendRequestTask();
-			request.execute(url);
+
+			String url;
 			try {
-				String result = request.get();
-				Log.i("create", result);
-				if(result.contains("Success")){
-					Intent i = new Intent(this, SelectGroupActivity.class);
-					i.putExtra("username", username.trim());
-					startActivity(i);
-				}
-				else{
+				url = "http://chatallthestuff.appspot.com/user/new?username=" +
+						URLEncoder.encode(username, "UTF-8") + "&password=" + 
+						URLEncoder.encode(password, "UTF-8") + "&number=" + URLEncoder.encode(number, "UTF-8");
+
+				SendRequestTask request = new SendRequestTask();
+				request.execute(url);
+				try {
+					String result = request.get();
+					Log.i("create", result);
+					if(result.contains("Success")){
+						Intent i = new Intent(this, SelectGroupActivity.class);
+						i.putExtra("username", username.trim());
+						startActivity(i);
+					}
+					else{
+						Toast toast = Toast.makeText(getApplicationContext(), 
+								"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
+						toast.setGravity(Gravity.TOP, 0, 0);
+						toast.show();
+					}
+				} catch (InterruptedException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
+							"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					Toast toast = Toast.makeText(getApplicationContext(), 
+							"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.show();
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 0);
-				toast.show();
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 0);
-				toast.show();
-				e.printStackTrace();
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 	}

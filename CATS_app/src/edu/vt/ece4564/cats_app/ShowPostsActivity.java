@@ -87,7 +87,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
 			for(int k = 0; k < j.length(); k++){
 				JSONObject jo = (JSONObject) j.get(k);
 				Post p = new Post(jo.getString("postedBy"), jo.getString("postBody"),
-						jo.getLong("latitude"), jo.getLong("longitude"), jo.getString("postedAt"));
+						jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("postedAt"));
 				posts.add(p);
 			}
 			
@@ -96,17 +96,17 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
 			
 		} catch (InterruptedException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts.",Toast.LENGTH_SHORT);
+					"Problem loading posts (InterruptedException e).",Toast.LENGTH_SHORT);
 			toast.show();
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts.",Toast.LENGTH_SHORT);
+					"Problem loading posts (ExecutionException e).",Toast.LENGTH_SHORT);
 			toast.show();
 			e.printStackTrace();
 		} catch (JSONException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts.",Toast.LENGTH_SHORT);
+					"Problem loading posts. (JSONException e)",Toast.LENGTH_SHORT);
 			toast.show();
 			e.printStackTrace();
 		}

@@ -5,8 +5,8 @@ public class Post {
 	private String groupName; //group this post was posted in
 	private String username; //user that posted this post
 	private String text; //body of post
-	private long latitude; //latitude of user posting
-	private long longitude; //longitude of user posting
+	private double latitude; //latitude of user posting
+	private double longitude; //longitude of user posting
 	private String datePosted; //time that post was written
 	
 	/**
@@ -16,7 +16,7 @@ public class Post {
 	 * @param lat latitude posted at
 	 * @param lon longitude posted at
 	 */
-	public Post(String user,String post, long lat, long lon, String date) {
+	public Post(String user,String post, double lat, double lon, String date) {
 		username = user;
 		text = post;
 		latitude = lat;

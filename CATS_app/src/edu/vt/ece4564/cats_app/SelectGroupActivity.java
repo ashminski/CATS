@@ -1,5 +1,7 @@
 package edu.vt.ece4564.cats_app;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +48,7 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 		groupPassField = (EditText) findViewById(R.id.groupPassBox);
 		submitGroupButton = (Button) findViewById(R.id.submitGroupButton);
 		createGroupButton = (Button) findViewById(R.id.createGroupButton);
-		
+
 		submitGroupButton.setOnClickListener(this);
 		createGroupButton.setOnClickListener(this);
 
@@ -120,38 +122,46 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 			String groupName = groupNameField.getText().toString().trim();
 			String groupPassword = groupPassField.getText().toString();
 
-			String url = "http://chatallthestuff.appspot.com/group/add?groupname=" +
-					groupName + "&password=" + groupPassword + "&username=" + username;
-			SendRequestTask request = new SendRequestTask();
-			request.execute(url);
+			String url;
 			try {
-				String result = request.get();
-				if(result.contains("Valid")){
-					Intent postIntent = new Intent(this,ShowPostsActivity.class);
-					postIntent.putExtra("username", username);
-					postIntent.putExtra("groupName", groupName);
-					startActivity(postIntent);
-				}
-				else if(result.contains("Duplicate")){
+				url = "http://chatallthestuff.appspot.com/group/add?groupname=" +
+						URLEncoder.encode(groupName, "UTF-8") + "&password=" + 
+						URLEncoder.encode(groupPassword, "UTF-8") + "&username=" + username;
+
+				SendRequestTask request = new SendRequestTask();
+				request.execute(url);
+				try {
+					String result = request.get();
+					if(result.contains("Valid")){
+						Intent postIntent = new Intent(this,ShowPostsActivity.class);
+						postIntent.putExtra("username", username);
+						postIntent.putExtra("groupName", groupName);
+						startActivity(postIntent);
+					}
+					else if(result.contains("Duplicate")){
+						Toast toast = Toast.makeText(getApplicationContext(), 
+								"Sorry, you are already a member of that group.",Toast.LENGTH_SHORT);
+						toast.show();
+					}
+					else{
+						Toast toast = Toast.makeText(getApplicationContext(), 
+								"Sorry, you couldn't be added to that group.",Toast.LENGTH_SHORT);
+						toast.show();
+					}
+				} catch (InterruptedException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Sorry, you are already a member of that group.",Toast.LENGTH_SHORT);
+							"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 					toast.show();
-				}
-				else{
+					e.printStackTrace();
+				} catch (ExecutionException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Sorry, you couldn't be added to that group.",Toast.LENGTH_SHORT);
+							"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 					toast.show();
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.show();
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.show();
-				e.printStackTrace();
+			} catch (UnsupportedEncodingException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		}
 		else if(arg0.getId() == R.id.createGroupButton){
