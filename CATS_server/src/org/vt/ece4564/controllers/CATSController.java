@@ -201,7 +201,7 @@ public class CATSController {
 	@RequestMapping("/group/post")
 	public void addPost(@RequestParam("username") String user, @RequestParam("groupName") String group,
 			@RequestParam("text") String text, @RequestParam("lat") float lat, 
-			@RequestParam("lon") float lon, HttpServletResponse response){
+			@RequestParam("lon") float lon, HttpServletResponse response) throws IOException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
 		q.declareParameters("String gname");
@@ -219,6 +219,31 @@ public class CATSController {
 		u.addPost(p);
 		p.setGroup(g);
 		g.addPost(p);
+		
+		response.setContentType("text/plain");
+		response.getWriter().write("Success");
+	}
+	
+	@RequestMapping("/group/numbers")
+	public void getGroupNumbers(@RequestParam("groupName") String group, 
+			HttpServletResponse response) throws JSONException, IOException{
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
+		q.declareParameters("String gname");
+		q.setUnique(true);
+		Group g = (Group) q.execute(group);
+		
+		JSONArray j = new JSONArray();
+		for(Key k : g.getMembers()){
+			User u = PMF.get().getPersistenceManager().getObjectById(User.class, k);
+			JSONObject jo = new JSONObject();
+			jo.put("name", u.getUsername());
+			jo.put("number", u.getNumber());
+			j.put(jo);
+		}
+		
+		response.setContentType("application/json");
+		response.getWriter().write(j.toString());
 	}
 	
 }

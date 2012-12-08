@@ -103,4 +103,12 @@ public class User {
 	public void addPost(Post p){
 		posts.add(p.getKey());
 	}
+	
+	/**
+	 * Returns phone number
+	 * @return
+	 */
+	public String getNumber(){
+		return phoneNumber;
+	}
 }
