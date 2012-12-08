@@ -200,8 +200,8 @@ public class CATSController {
 	//add new post
 	@RequestMapping("/group/post")
 	public void addPost(@RequestParam("username") String user, @RequestParam("groupName") String group,
-			@RequestParam("text") String text, @RequestParam("lat") long lat, 
-			@RequestParam("lon") long lon, HttpServletResponse response){
+			@RequestParam("text") String text, @RequestParam("lat") float lat, 
+			@RequestParam("lon") float lon, HttpServletResponse response){
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
 		q.declareParameters("String gname");

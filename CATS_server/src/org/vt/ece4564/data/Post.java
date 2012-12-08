@@ -44,7 +44,7 @@ public class Post {
 	 * @param lat latitude posted at
 	 * @param lon longitude posted at
 	 */
-	public Post(String user,String post, long lat, long lon) {
+	public Post(String user,String post, float lat, float lon) {
 		username = user;
 		text = post;
 		GPSLocation = new GeoPt(lat, lon);
