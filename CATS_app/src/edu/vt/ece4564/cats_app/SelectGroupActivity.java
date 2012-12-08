@@ -165,7 +165,11 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 			}
 		}
 		else if(arg0.getId() == R.id.createGroupButton){
-			// TODO send to create screen/dialog
+			Intent i = new Intent(getApplicationContext(), CreateGroupActivity.class);
+			i.putExtra("gName", groupNameField.getText().toString());
+			i.putExtra("gPassword", groupPassField.getText().toString());
+			i.putExtra("uName", username);
+			startActivity(i);
 		}
 
 	}
