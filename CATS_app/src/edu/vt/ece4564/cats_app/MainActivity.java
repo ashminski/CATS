@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -24,7 +26,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button loginButton;
 	private Button createAccountButton;
 	private Button submitButton;
-
+	private ProgressDialog dialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ public class MainActivity extends Activity implements OnClickListener {
         loginButton = (Button) findViewById(R.id.loginButton);
         createAccountButton = (Button) findViewById(R.id.newAccountButton);
         submitButton = (Button) findViewById(R.id.submitButton);
+        //dialog = new ProgressDialog(MainActivity.this);
         
         loginButton.setOnClickListener(this);
         createAccountButton.setOnClickListener(this);
@@ -51,6 +54,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		if(arg0.getId() == R.id.loginButton){
+			//dialog = ProgressDialog.show(MainActivity.this, "", "Logging in...", true);
 			//validate login information, if good, then pass to next activity
 			String username = usernameField.getText().toString();
 			String password = passwordField.getText().toString();
@@ -62,6 +66,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				String result = request.get();
 				Log.i("login", result);
 				if(result.contains("Valid")){
+					dialog.dismiss();
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Successful login",Toast.LENGTH_SHORT);
 					toast.show();
@@ -71,18 +76,21 @@ public class MainActivity extends Activity implements OnClickListener {
 					startActivity(i);
 				}
 				else{
+					dialog.dismiss();
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
+				dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
+				dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
@@ -102,7 +110,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			String username = usernameField.getText().toString();
 			String password = passwordField.getText().toString();
 			String number = phoneField.getText().toString();
-			if(username.isEmpty() || password.isEmpty() || number.isEmpty()){
+			if(username.isEmpty()|| password.isEmpty() || number.isEmpty()){
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please fill out all fields.",Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
