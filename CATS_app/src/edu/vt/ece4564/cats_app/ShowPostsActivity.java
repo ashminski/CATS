@@ -15,13 +15,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class ShowPostsActivity extends Activity implements OnClickListener{
+public class ShowPostsActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 
 	private Button newPostButton;
 	private String username;
@@ -41,6 +43,8 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
         Intent i = getIntent();
 		username = i.getStringExtra("username");
 		groupName = i.getStringExtra("groupName");
+		
+		groupListSpinner.setOnItemSelectedListener(this);
 		
 		//TODO make sure spinner is highlighting current group
 		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
@@ -128,5 +132,55 @@ public class ShowPostsActivity extends Activity implements OnClickListener{
 		i.putExtra("username", username);
 		i.putExtra("groupName", groupName);
 		startActivity(i);
+	}
+
+	@Override
+	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
+			long arg3) {
+		String url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + 
+			groupListSpinner.getSelectedItem().toString();
+		SendRequestTask request2 = new SendRequestTask();
+		request2.execute(url);
+		String result2;
+		try {
+			result2 = request2.get();
+			Log.i("posts", result2);
+			JSONArray j = new JSONArray(result2);
+			List<Post> posts = new ArrayList<Post>();
+			for(int k = 0; k < j.length(); k++){
+				JSONObject jo = (JSONObject) j.get(k);
+				Post p = new Post(jo.getString("postedBy"), jo.getString("postBody"),
+						jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("postedAt"));
+				posts.add(p);
+			}
+			
+			MyAdapter adapter = new MyAdapter(this, posts);
+			postListView.setAdapter(adapter);
+			
+		} catch (InterruptedException e) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts (InterruptedException e).",Toast.LENGTH_SHORT);
+			toast.show();
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts (ExecutionException e).",Toast.LENGTH_SHORT);
+			toast.show();
+			e.printStackTrace();
+		} catch (JSONException e) {
+			Toast toast = Toast.makeText(getApplicationContext(), 
+					"Problem loading posts. (JSONException e)",Toast.LENGTH_SHORT);
+			toast.show();
+			e.printStackTrace();
+		}
+		
+		//TODO onclick for new post button
+		newPostButton.setOnClickListener(this);
+	}
+
+	@Override
+	public void onNothingSelected(AdapterView<?> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
