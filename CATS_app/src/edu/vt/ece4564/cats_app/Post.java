@@ -77,5 +77,9 @@ public class Post {
 	public Date getDatePosted(){
 		return datePosted;
 	}
+	
+	public String getURLLocation(){
+		return latitude + "," + longitude;
+	}
 
 }

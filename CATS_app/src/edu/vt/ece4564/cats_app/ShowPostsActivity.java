@@ -12,6 +12,8 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +21,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -122,7 +125,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			result2 = request2.get();
 			Log.i("posts", result2);
 			JSONArray j = new JSONArray(result2);
-			List<Post> posts = new ArrayList<Post>();
+			final List<Post> posts = new ArrayList<Post>();
 			for(int k = 0; k < j.length(); k++){
 				JSONObject jo = (JSONObject) j.get(k);
 				Post p = new Post(jo.getString("postedBy"), jo.getString("postBody"),
@@ -138,6 +141,46 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			
 			MyAdapter adapter = new MyAdapter(this, posts);
 			postListView.setAdapter(adapter);
+			postListView.setOnItemClickListener(new OnItemClickListener(){
+
+				//On click, go to showPostsActivity
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int position, long id) {
+					String googleURL = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+							posts.get(position).getURLLocation() + "&sensor=true";
+
+					SendRequestTask request = new SendRequestTask();
+					request.execute(googleURL);
+					try {
+						String result = request.get();
+						JSONObject j = new JSONObject(result);
+						JSONArray ja = j.getJSONArray("results");
+						JSONObject jo = ja.getJSONObject(0);
+						String address = jo.getString("formatted_address");
+						AlertDialog.Builder builder = new AlertDialog.Builder(arg1.getContext());
+						builder.setMessage("User was at: " + address + " when posted")
+							.setTitle("Location");
+						builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.dismiss();
+							}
+						});
+						builder.create();
+						AlertDialog dialog = builder.show();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+
+			});
 			
 		} catch (InterruptedException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
