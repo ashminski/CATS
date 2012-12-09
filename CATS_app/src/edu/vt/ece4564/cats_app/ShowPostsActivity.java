@@ -62,6 +62,8 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			ArrayAdapter<String> spinAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
 					groupNames);
 			groupListSpinner.setAdapter(spinAdapter);
+			int pos = spinAdapter.getPosition(groupName);
+			groupListSpinner.setSelection(pos);
 		} catch (InterruptedException e1) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading groups.",Toast.LENGTH_SHORT);
@@ -77,7 +79,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 					"Problem loading groups.",Toast.LENGTH_SHORT);
 			toast.show();
 			e.printStackTrace();
-		}
+		}		
 		
 		url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + groupName;
 		SendRequestTask request2 = new SendRequestTask();
@@ -137,6 +139,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 	@Override
 	public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2,
 			long arg3) {
+		groupName = groupListSpinner.getSelectedItem().toString();
 		String url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + 
 			groupListSpinner.getSelectedItem().toString();
 		SendRequestTask request2 = new SendRequestTask();

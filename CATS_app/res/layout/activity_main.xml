@@ -69,13 +69,4 @@
         android:text="Submit"
         android:visibility="invisible" />
 
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/submitButton"
-        android:layout_below="@+id/usernameField"
-        android:visibility="invisible" />
-
 </RelativeLayout>
