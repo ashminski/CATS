@@ -83,6 +83,7 @@ public class CATSController {
 		for(Key k : u.getGroups()){
 			Group g = PMF.get().getPersistenceManager().getObjectById(Group.class, k);
 			JSONObject jo = new JSONObject();
+			//Get latest post for group
 			Query qu = pm.newQuery("select from " + Post.class.getName() + " where groupName==gname");
 			qu.declareParameters("String gname");
 			qu.setOrdering("datePosted descending");
@@ -130,7 +131,7 @@ public class CATSController {
 		Group g = (Group) q.execute(groupName);
 		response.setContentType("text/plain");
 
-		if(g != null && g.getPassword().equals(pass)){
+		if(g != null && g.getPassword().equals(pass)){ //If group name and password are correct
 			q = pm.newQuery("select from " + User.class.getName() + " where username==user");
 			q.declareParameters("String user");
 			q.setUnique(true);
@@ -183,7 +184,7 @@ public class CATSController {
 		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
 		q.declareParameters("String gname");
 		List<Group> groups = (List<Group>) q.execute(name);
-		if(groups == null || groups.isEmpty()){
+		if(groups == null || groups.isEmpty()){ //If group name isn't already created
 
 			q = pm.newQuery("select from " + User.class.getName() + " where username==name");
 			q.declareParameters("String name");
@@ -210,11 +211,13 @@ public class CATSController {
 			@RequestParam("text") String text, @RequestParam("lat") float lat, 
 			@RequestParam("lon") float lon, HttpServletResponse response) throws IOException{
 		PersistenceManager pm = PMF.get().getPersistenceManager();
+		//Get group to be posted in
 		Query q = pm.newQuery("select from " + Group.class.getName() + " where groupName==gname");
 		q.declareParameters("String gname");
 		q.setUnique(true);
 		Group g = (Group) q.execute(group);
 
+		//Get poster
 		q = pm.newQuery("select from " + User.class.getName() + " where username==name");
 		q.declareParameters("String name");
 		q.setUnique(true);
@@ -231,6 +234,7 @@ public class CATSController {
 		response.getWriter().write("Success");
 	}
 
+	//Get phone numbers for group members
 	@RequestMapping("/group/numbers")
 	public void getGroupNumbers(@RequestParam("groupName") String group, 
 			HttpServletResponse response) throws JSONException, IOException{
@@ -253,6 +257,7 @@ public class CATSController {
 		response.getWriter().write(j.toString());
 	}
 
+	//Unused to get newest post date for group
 	@RequestMapping("/group/newest")
 	public void getMostRecentPost(@RequestParam("groupName") String group, 
 			HttpServletResponse response) throws JSONException, IOException{
