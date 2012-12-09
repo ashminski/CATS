@@ -125,9 +125,9 @@ public class NewPostActivity extends Activity implements OnClickListener, Locati
 							smsManager.sendTextMessage(num, null, "CATS! " + username + " has posted in "
 									+ groupName + ": "+ postText, null, null);
 						}
-						
+						this.finish();
 					}
-					this.finish();
+					
 				}
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 

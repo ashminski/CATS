@@ -1,10 +1,5 @@
 package edu.vt.ece4564.cats_app;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
 public class Post {
 
 	private String groupName; //group this post was posted in
@@ -12,7 +7,7 @@ public class Post {
 	private String text; //body of post
 	private double latitude; //latitude of user posting
 	private double longitude; //longitude of user posting
-	private Date datePosted; //time that post was written
+	private String datePosted; //time that post was written
 	
 	/**
 	 * Constructor
@@ -26,15 +21,7 @@ public class Post {
 		text = post;
 		latitude = lat;
 		longitude = lon;
-		Date javaDate;
-		try {
-			javaDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH).parse(date);
-			datePosted = javaDate;
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		datePosted = date;
 	}
 	
 	/**
@@ -65,7 +52,7 @@ public class Post {
 	 * Returns date posted
 	 * @return
 	 */
-	public Date getDatePosted(){
+	public String getDatePosted(){
 		return datePosted;
 	}
 
