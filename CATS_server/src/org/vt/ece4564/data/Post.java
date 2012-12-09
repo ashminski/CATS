@@ -98,5 +98,13 @@ public class Post {
 	public Date getDatePosted(){
 		return datePosted;
 	}
+	
+	/**
+	 * Returns group name
+	 * @return
+	 */
+	public String getGroupName(){
+		return groupName;
+	}
 
 }
