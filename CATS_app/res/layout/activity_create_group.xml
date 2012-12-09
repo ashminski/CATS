@@ -7,7 +7,7 @@
         android:id="@+id/groupNameInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/newGroupName"
         android:layout_alignParentTop="true"
         android:layout_marginTop="5dp"
         android:text="@string/create_group_group_name"
@@ -17,9 +17,8 @@
         android:id="@+id/newGroupName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/passwordInfo"
         android:layout_below="@+id/groupNameInfo"
-        android:layout_marginLeft="5dp"
         android:ems="10"
         android:inputType="text" />
 
@@ -27,7 +26,7 @@
         android:id="@+id/passwordInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/newPassword"
         android:layout_below="@+id/newGroupName"
         android:layout_marginTop="5dp"
         android:text="@string/create_group_password"
@@ -37,9 +36,8 @@
         android:id="@+id/newPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/addNumberText"
         android:layout_below="@+id/passwordInfo"
-        android:layout_marginLeft="5dp"
         android:ems="10"
         android:inputType="text" >
 
@@ -50,7 +48,7 @@
         android:id="@+id/addNumberText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
+        android:layout_alignLeft="@+id/newPhone"
         android:layout_below="@+id/newPassword"
         android:layout_marginTop="5dp"
         android:text="@string/create_group_add_password"
@@ -62,10 +60,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/addNumberText"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:ems="10"
         android:inputType="phone" />
-
+
     <Button
         android:id="@+id/addPerson"
         android:layout_width="wrap_content"
@@ -73,10 +71,9 @@
         android:layout_alignBottom="@+id/newPhone"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/addNumberText"
-        android:layout_marginRight="5dp"
-        android:layout_toRightOf="@+id/addNumberText"
+        android:layout_marginRight="15dp"
         android:text="@string/create_group_add_button" />
-
+
     <Button
         android:id="@+id/createGroupButtonC"
         android:layout_width="wrap_content"
@@ -84,6 +81,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp"
         android:text="@string/create_group_create_button" />
 
     <ScrollView
@@ -98,15 +99,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/numberView"
                 android:layout_width="match_parent"
-                android:layout_height="222dp"
+                android:layout_height="188dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
                 android:clickable="true"
                 android:scrollbarAlwaysDrawVerticalTrack="true"
                 android:scrollbars="vertical"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
+
         </LinearLayout>
     </ScrollView>
 

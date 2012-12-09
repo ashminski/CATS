@@ -20,6 +20,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+/**
+ * Shows first screen to login/create account
+ * @author Ashley
+ *
+ */
 public class MainActivity extends Activity implements OnClickListener {
 
 	private EditText usernameField;
@@ -81,21 +86,21 @@ public class MainActivity extends Activity implements OnClickListener {
 					//dialog.dismiss();
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.setGravity(Gravity.TOP, 0, 10);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
 				//dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 0);
+				toast.setGravity(Gravity.TOP, 0, 10);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				//dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 0);
+				toast.setGravity(Gravity.TOP, 0, 10);
 				toast.show();
 				e.printStackTrace();
 			}
@@ -109,13 +114,21 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
 		else if(arg0.getId() == R.id.submitButton){
 			//save new account, go to next activity
-			String username = usernameField.getText().toString().trim();
+			String username = usernameField.getText().toString().trim().toLowerCase();
+			if(!username.matches("^[a-z0-9]{3,15}$")){
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Please only use alphanumeric characters with length between 3 and 15.",
+						Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 10);
+				toast.show();
+				return;
+			}
 			String password = passwordField.getText().toString();
 			String number = phoneField.getText().toString();
 			if(username.isEmpty()|| password.isEmpty() || number.isEmpty()){
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please fill out all fields.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 0);
+				toast.setGravity(Gravity.TOP, 0, 10);
 				toast.show();
 				return;
 			}
@@ -139,19 +152,19 @@ public class MainActivity extends Activity implements OnClickListener {
 					else{
 						Toast toast = Toast.makeText(getApplicationContext(), 
 								"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
-						toast.setGravity(Gravity.TOP, 0, 0);
+						toast.setGravity(Gravity.TOP, 0, 10);
 						toast.show();
 					}
 				} catch (InterruptedException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.setGravity(Gravity.TOP, 0, 10);
 					toast.show();
 					e.printStackTrace();
 				} catch (ExecutionException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.TOP, 0, 0);
+					toast.setGravity(Gravity.TOP, 0, 10);
 					toast.show();
 					e.printStackTrace();
 				}

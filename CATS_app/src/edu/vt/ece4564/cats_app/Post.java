@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import android.util.Log;
+
 public class Post {
 
 	private String groupName; //group this post was posted in
@@ -66,6 +68,7 @@ public class Post {
 	 * @return
 	 */
 	public Date getDatePosted(){
+		Log.i("date", String.valueOf(datePosted.getTime()));
 		return datePosted;
 	}
 

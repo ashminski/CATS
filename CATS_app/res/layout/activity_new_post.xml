@@ -13,7 +13,8 @@
         android:ems="10"
         android:hint="Enter post here"
         android:inputType="textMultiLine"
-        android:minLines="5" />
+        android:minLines="8"
+        android:minWidth="250dp" />
 
     <CheckBox
         android:id="@+id/smsCheckBox"

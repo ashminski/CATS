@@ -1,6 +1,8 @@
 package edu.vt.ece4564.cats_app;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -94,7 +96,15 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 						jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("postedAt"));
 				posts.add(p);
 			}
-			
+			Collections.sort(posts, new Comparator<Post>(){
+				  public int compare(Post s1, Post s2) {
+				    return s2.getDatePosted().compareTo(s1.getDatePosted());
+				  }
+				});
+			Collections.reverse(posts);
+			for(Post blah : posts){
+				Log.i("order", blah.getDatePosted().getTime() + " " + blah.getDatePosted().toString());
+			}
 			MyAdapter adapter = new MyAdapter(this, posts);
 			postListView.setAdapter(adapter);
 			
@@ -115,7 +125,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			e.printStackTrace();
 		}
 		
-		//TODO onclick for new post button
 		newPostButton.setOnClickListener(this);
     }
 
@@ -127,7 +136,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 
 	@Override
 	public void onClick(View arg0) {
-		// TODO send intent to new post activity
 		Intent i = new Intent(this, NewPostActivity.class);
 		i.putExtra("username", username);
 		i.putExtra("groupName", groupName);
@@ -154,6 +162,12 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 				posts.add(p);
 			}
 			
+			Collections.sort(posts, new Comparator<Post>(){
+				  public int compare(Post s1, Post s2) {
+				    return s1.getDatePosted().compareTo(s2.getDatePosted());
+				  }
+				});
+			
 			MyAdapter adapter = new MyAdapter(this, posts);
 			postListView.setAdapter(adapter);
 			
@@ -174,7 +188,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			e.printStackTrace();
 		}
 		
-		//TODO onclick for new post button
 		newPostButton.setOnClickListener(this);
 	}
 
