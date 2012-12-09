@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +29,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+/**
+ * Shows the screen to enter a new post to the group
+ * @author Ashley
+ *
+ */
 public class NewPostActivity extends Activity implements OnClickListener, LocationListener{
 
 	private EditText postTextField;
@@ -103,6 +109,7 @@ public class NewPostActivity extends Activity implements OnClickListener, Locati
 				if(!result.contains("Success")){
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Something went wrong, try again!",Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 0, 100);
 					toast.show();
 				}
 				else{
@@ -112,7 +119,7 @@ public class NewPostActivity extends Activity implements OnClickListener, Locati
 						SendRequestTask request2 = new SendRequestTask();
 						request2.execute(url);
 						String numbersJson = request2.get();
-						Log.i("wtfnumbers", numbersJson);
+
 						JSONArray j = new JSONArray(numbersJson);
 						List<String> numbers = new ArrayList<String>();
 						for(int k = 0; k < j.length(); k++){
@@ -132,27 +139,34 @@ public class NewPostActivity extends Activity implements OnClickListener, Locati
 			} catch (InterruptedException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong, try again!",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong, try again!",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
 				e.printStackTrace();
 			} catch (JSONException e) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong, try again!",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
 				e.printStackTrace();
 			}
 		} catch (UnsupportedEncodingException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Something went wrong, try again!",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e.printStackTrace();
 		}	
 	}
 
+	/**
+	 * Sets GPS location
+	 */
 	@Override
 	public void onLocationChanged(Location location) {
 		lastLocation = location;

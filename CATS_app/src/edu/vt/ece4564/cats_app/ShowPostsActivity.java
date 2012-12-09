@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+/**
+ * Shows the posts within the selected group
+ * @author Ashley
+ *
+ */
 public class ShowPostsActivity extends Activity implements OnClickListener, OnItemSelectedListener{
 
 	private Button newPostButton;
@@ -48,6 +54,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 		
 		groupListSpinner.setOnItemSelectedListener(this);
 		
+		//Populates spinner
 		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
 		SendRequestTask request = new SendRequestTask();
 		request.execute(url);
@@ -64,20 +71,23 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 					groupNames);
 			groupListSpinner.setAdapter(spinAdapter);
 			int pos = spinAdapter.getPosition(groupName);
-			groupListSpinner.setSelection(pos);
+			groupListSpinner.setSelection(pos); //selects group to load correct posts
 		} catch (InterruptedException e1) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e1.printStackTrace();
 		} catch (ExecutionException e1) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e1.printStackTrace();
 		} catch (JSONException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading groups.",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e.printStackTrace();
 		}		
@@ -92,7 +102,7 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
     }
 
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View arg0) { //Sends to new post screen
 		Intent i = new Intent(this, NewPostActivity.class);
 		i.putExtra("username", username);
 		i.putExtra("groupName", groupName);
@@ -132,16 +142,19 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 		} catch (InterruptedException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading posts (InterruptedException e).",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading posts (ExecutionException e).",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e.printStackTrace();
 		} catch (JSONException e) {
 			Toast toast = Toast.makeText(getApplicationContext(), 
 					"Problem loading posts. (JSONException e)",Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.TOP, 0, 100);
 			toast.show();
 			e.printStackTrace();
 		}

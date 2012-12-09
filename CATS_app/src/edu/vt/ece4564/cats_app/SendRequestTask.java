@@ -12,7 +12,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 
-
+/**
+ * This tasks executes a GET request for the given URL
+ * @author Ashley
+ *
+ */
 public class SendRequestTask extends AsyncTask<String, Void, String> {
 	
 	@Override

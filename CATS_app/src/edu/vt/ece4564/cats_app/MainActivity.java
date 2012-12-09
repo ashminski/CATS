@@ -40,23 +40,24 @@ public class MainActivity extends Activity implements OnClickListener {
 	private Button loginButton;
 	private Button createAccountButton;
 	private Button submitButton;
-	private ProgressDialog dialog;
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-        usernameField = (EditText) findViewById(R.id.usernameField);
-        passwordField = (EditText) findViewById(R.id.passwordField);
-        phoneField = (EditText) findViewById(R.id.phoneField);
-        loginButton = (Button) findViewById(R.id.loginButton);
-        createAccountButton = (Button) findViewById(R.id.newAccountButton);
-        submitButton = (Button) findViewById(R.id.submitButton);
-        
-        loginButton.setOnClickListener(this);
-        createAccountButton.setOnClickListener(this);
-        submitButton.setOnClickListener(this);
-    }
+
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+
+		usernameField = (EditText) findViewById(R.id.usernameField);
+		passwordField = (EditText) findViewById(R.id.passwordField);
+		phoneField = (EditText) findViewById(R.id.phoneField);
+		loginButton = (Button) findViewById(R.id.loginButton);
+		createAccountButton = (Button) findViewById(R.id.newAccountButton);
+		submitButton = (Button) findViewById(R.id.submitButton);
+
+		loginButton.setOnClickListener(this);
+		createAccountButton.setOnClickListener(this);
+		submitButton.setOnClickListener(this);
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,46 +69,50 @@ public class MainActivity extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		if(arg0.getId() == R.id.loginButton){
 			//validate login information, if good, then pass to next activity
-			String username = usernameField.getText().toString();
+			String username = usernameField.getText().toString().trim().toLowerCase();
 			String password = passwordField.getText().toString();
-			String url = "http://chatallthestuff.appspot.com/user/validate?username="
-					+ username.trim() + "&pass=" + password;
-			SendRequestTaskMain request = new SendRequestTaskMain();
-			request.execute(url);
+			String url;
 			try {
-				String result = request.get();
-				Log.i("login", result);
-				if(result.contains("Valid")){
-					//dialog.dismiss();
+				url = "http://chatallthestuff.appspot.com/user/validate?username="
+						+ URLEncoder.encode(username, "UTF-8") + "&pass=" + URLEncoder.encode(password, "UTF-8");
+
+				SendRequestTaskMain request = new SendRequestTaskMain();
+				request.execute(url);
+				try {
+					String result = request.get();
+
+					if(result.contains("Valid")){
+						//User is logged in, pass to group screen
+						Intent i = new Intent(this, SelectGroupActivity.class)
+							.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						i.putExtra("username", username.trim());
+						startActivity(i);
+					}
+					else{
+						Toast toast = Toast.makeText(getApplicationContext(), 
+								"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
+						toast.setGravity(Gravity.TOP, 0, 100);
+						toast.show();
+					}
+				} catch (InterruptedException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Successful login",Toast.LENGTH_SHORT);
+							"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 0, 100);
 					toast.show();
-					//User is logged in, pass to group screen
-					Intent i = new Intent(this, SelectGroupActivity.class);
-					i.putExtra("username", username.trim());
-					startActivity(i);
-				}
-				else{
-					//dialog.dismiss();
+					e.printStackTrace();
+				} catch (ExecutionException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
-							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
-					toast.setGravity(Gravity.TOP, 0, 10);
+							"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.TOP, 0, 100);
 					toast.show();
+					e.printStackTrace();
 				}
-			} catch (InterruptedException e) {
-				//dialog.dismiss();
+			} catch (UnsupportedEncodingException e1) {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 10);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				//dialog.dismiss();
-				Toast toast = Toast.makeText(getApplicationContext(), 
-						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 10);
-				toast.show();
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
 		}
 		else if(arg0.getId() == R.id.newAccountButton){
@@ -124,7 +129,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please only use alphanumeric characters with length between 3 and 15.",
 						Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 10);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
 				return;
 			}
@@ -133,7 +138,7 @@ public class MainActivity extends Activity implements OnClickListener {
 			if(username.isEmpty()|| password.isEmpty() || number.isEmpty()){
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please fill out all fields.",Toast.LENGTH_SHORT);
-				toast.setGravity(Gravity.TOP, 0, 10);
+				toast.setGravity(Gravity.TOP, 0, 100);
 				toast.show();
 				return;
 			}
@@ -149,7 +154,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				try {
 					String result = request.get();
 					Log.i("create", result);
-					if(result.contains("Success")){
+					if(result.contains("Success")){ //after creation, send to selectGroupActivity
 						Intent i = new Intent(this, SelectGroupActivity.class);
 						i.putExtra("username", username.trim());
 						startActivity(i);
@@ -157,24 +162,27 @@ public class MainActivity extends Activity implements OnClickListener {
 					else{
 						Toast toast = Toast.makeText(getApplicationContext(), 
 								"Sorry, that username is already taken!",Toast.LENGTH_SHORT);
-						toast.setGravity(Gravity.TOP, 0, 10);
+						toast.setGravity(Gravity.TOP, 0, 100);
 						toast.show();
 					}
 				} catch (InterruptedException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Something went wrong (InterruptedException)! Please try again",Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.TOP, 0, 10);
+					toast.setGravity(Gravity.TOP, 0, 100);
 					toast.show();
 					e.printStackTrace();
 				} catch (ExecutionException e) {
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Something went wrong (ExecutionException)! Please try again",Toast.LENGTH_SHORT);
-					toast.setGravity(Gravity.TOP, 0, 10);
+					toast.setGravity(Gravity.TOP, 0, 100);
 					toast.show();
 					e.printStackTrace();
 				}
 			} catch (UnsupportedEncodingException e1) {
-				// TODO Auto-generated catch block
+				Toast toast = Toast.makeText(getApplicationContext(), 
+						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
+				toast.setGravity(Gravity.TOP, 0, 100);
+				toast.show();
 				e1.printStackTrace();
 			}
 		}
@@ -182,20 +190,20 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
 	public class SendRequestTaskMain extends AsyncTask<String, Void, String> {
-		
+
 		ProgressDialog dialog;
-		
+
 		@Override
 		protected void onPreExecute() {
 			dialog = new ProgressDialog(MainActivity.this);
 			dialog = ProgressDialog.show(MainActivity.this, "", "Logging in...", true);
 		}
-		
+
 		@Override
 		protected String doInBackground(String... url) {
 			HttpGet get = new HttpGet(url[0]);
 			HttpClient client = new DefaultHttpClient();
-			
+
 			try {
 				HttpResponse response = client.execute(get);
 				String line = null;
@@ -205,7 +213,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				while((line = reader.readLine()) != null){
 					sb.append(line + "\n");
 				}
-				
+
 				return sb.toString();
 
 			} catch (ClientProtocolException e) {
@@ -223,6 +231,6 @@ public class MainActivity extends Activity implements OnClickListener {
 			super.onPostExecute(result);
 			dialog.dismiss();
 		}
-		
+
 	}
 }

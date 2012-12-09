@@ -90,7 +90,7 @@ public class CreateGroupActivity extends Activity implements OnClickListener{
 		}
 		else if (arg0.getId() == R.id.createGroupButtonC) {
 			String newGroupName = newGroupNameText.getText().toString().trim().toLowerCase();
-			if(!newGroupName.matches("^[a-z0-9]$")){
+			if(!newGroupName.matches("^[a-z0-9]{3,40}$")){
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Please only use alphanumeric characters.",
 						Toast.LENGTH_SHORT);
@@ -127,6 +127,7 @@ public class CreateGroupActivity extends Activity implements OnClickListener{
 						i.putExtra("username", username);
 						i.putExtra("groupName", newGroupNameText.getText().toString());
 						startActivity(i);
+						this.finish();
 					}
 					else{
 						Toast toast = Toast.makeText(getApplicationContext(), 

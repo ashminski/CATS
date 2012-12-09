@@ -1,5 +1,6 @@
 package edu.vt.ece4564.cats_app;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -7,6 +8,11 @@ import java.util.Locale;
 
 import android.util.Log;
 
+/**
+ * Class holds values for a post, as given by JSON
+ * @author Ashley
+ *
+ */
 public class Post {
 
 	private String groupName; //group this post was posted in
@@ -52,7 +58,8 @@ public class Post {
 	 * @return
 	 */
 	public String getCoordinates(){
-		return latitude + ", " + longitude;
+		DecimalFormat df = new DecimalFormat("###.####");
+		return df.format(latitude) + ", " + df.format(longitude);
 	}
 	
 	/**
@@ -68,7 +75,6 @@ public class Post {
 	 * @return
 	 */
 	public Date getDatePosted(){
-		Log.i("date", String.valueOf(datePosted.getTime()));
 		return datePosted;
 	}
 
