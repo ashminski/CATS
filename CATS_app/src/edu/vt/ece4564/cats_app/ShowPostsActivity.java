@@ -48,7 +48,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 		
 		groupListSpinner.setOnItemSelectedListener(this);
 		
-		//TODO make sure spinner is highlighting current group
 		String url = "http://chatallthestuff.appspot.com/user/groups?username=" + username;
 		SendRequestTask request = new SendRequestTask();
 		request.execute(url);
@@ -82,50 +81,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			toast.show();
 			e.printStackTrace();
 		}		
-		
-		url = "http://chatallthestuff.appspot.com/group/posts?groupname=" + groupName;
-		SendRequestTask request2 = new SendRequestTask();
-		request2.execute(url);
-		String result2;
-		try {
-			result2 = request2.get();
-			Log.i("posts", result2);
-			JSONArray j = new JSONArray(result2);
-			List<Post> posts = new ArrayList<Post>();
-			for(int k = 0; k < j.length(); k++){
-				JSONObject jo = (JSONObject) j.get(k);
-				Post p = new Post(jo.getString("postedBy"), jo.getString("postBody"),
-						jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("postedAt"));
-				posts.add(p);
-			}
-			Collections.sort(posts, new Comparator<Post>(){
-				  public int compare(Post s1, Post s2) {
-				    return s2.getDatePosted().compareTo(s1.getDatePosted());
-				  }
-				});
-			Collections.reverse(posts);
-			for(Post blah : posts){
-				Log.i("order", blah.getDatePosted().getTime() + " " + blah.getDatePosted().toString());
-			}
-			MyAdapter adapter = new MyAdapter(this, posts);
-			postListView.setAdapter(adapter);
-			
-		} catch (InterruptedException e) {
-			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts (InterruptedException e).",Toast.LENGTH_SHORT);
-			toast.show();
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts (ExecutionException e).",Toast.LENGTH_SHORT);
-			toast.show();
-			e.printStackTrace();
-		} catch (JSONException e) {
-			Toast toast = Toast.makeText(getApplicationContext(), 
-					"Problem loading posts. (JSONException e)",Toast.LENGTH_SHORT);
-			toast.show();
-			e.printStackTrace();
-		}
 		
 		newPostButton.setOnClickListener(this);
     }
@@ -165,11 +120,11 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 				posts.add(p);
 			}
 			
-			Collections.sort(posts, new Comparator<Post>(){
+			Collections.sort(posts, Collections.reverseOrder(new Comparator<Post>(){
 				  public int compare(Post s1, Post s2) {
 				    return s1.getDatePosted().compareTo(s2.getDatePosted());
 				  }
-				});
+				}));
 			
 			MyAdapter adapter = new MyAdapter(this, posts);
 			postListView.setAdapter(adapter);
@@ -191,7 +146,6 @@ public class ShowPostsActivity extends Activity implements OnClickListener, OnIt
 			e.printStackTrace();
 		}
 		
-		newPostButton.setOnClickListener(this);
 	}
 
 	@Override

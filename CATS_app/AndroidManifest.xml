@@ -29,7 +29,8 @@
         <activity
             android:name=".SelectGroupActivity"
             android:label="@string/title_activity_main"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize|stateHidden"
+             >
         </activity>
         <activity
             android:name=".ShowPostsActivity"

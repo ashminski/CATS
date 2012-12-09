@@ -2,9 +2,13 @@ package edu.vt.ece4564.cats_app;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
@@ -65,7 +69,12 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 				JSONObject jo = (JSONObject) j.get(k);
 				Map<String,String> row = new HashMap<String, String>();
 				row.put("id", jo.getString("groupName")); //Big text is group name
-				places.add(row); //TODO small text = date/time of last posting?
+				if(jo.has("newest")){
+					Date javaDate = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", 
+							Locale.ENGLISH).parse(jo.getString("newest"));
+					row.put("date", "Last posted at: " + javaDate.toString());
+				}
+				places.add(row);
 			}
 			if(places.isEmpty()){
 				groupListView.setVisibility(View.GONE);
@@ -75,7 +84,7 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 						this,
 						places,
 						android.R.layout.simple_list_item_2,
-						new String[] {"id", ""},
+						new String[] {"id", "date"},
 						new int[] {android.R.id.text1,android.R.id.text2});
 				groupListView.setAdapter(a);
 				groupListView.setOnItemClickListener(new OnItemClickListener(){
@@ -83,15 +92,11 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int position, long id) {
-						// TODO On click, send to activity that displays posts in group
-						Intent postIntent = new Intent(arg1.getContext(),ShowPostsActivity.class);
-						//postIntent.putExtra("groupName",);
+						Intent postIntent = new Intent(arg1.getContext(),ShowPostsActivity.class)
+							.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						postIntent.putExtra("username", username);
 						postIntent.putExtra("groupName",places.get(position).get("id"));
 						startActivity(postIntent);
-						/*Toast toast = Toast.makeText(getApplicationContext(), 
-								"position: " + position,Toast.LENGTH_SHORT);
-						toast.show();*/
 					}
 
 				});
@@ -104,6 +109,9 @@ public class SelectGroupActivity extends Activity implements OnClickListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
