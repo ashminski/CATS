@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -98,6 +99,15 @@ public class CreateGroupActivity extends Activity implements OnClickListener{
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Your group has been created.",Toast.LENGTH_SHORT);
 					toast.show();
+					
+					for (int i = 0; i < numbersToAdd.size(); i++) {
+						SmsManager smsMan = SmsManager.getDefault();
+						smsMan.sendTextMessage(numbersToAdd.get(i), null, 
+								username + " has added you to the group " + newGroupNameText.getText().toString() + 
+								" with the password " + newPasswordText.getText().toString()
+								, null, null);
+					}
+					
 					//Group has been created.
 					Intent i = new Intent(this, ShowPostsActivity.class);
 					i.putExtra("username", username);

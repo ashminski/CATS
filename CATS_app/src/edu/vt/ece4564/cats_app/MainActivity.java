@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements OnClickListener {
 				String result = request.get();
 				Log.i("login", result);
 				if(result.contains("Valid")){
-					dialog.dismiss();
+					//dialog.dismiss();
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Successful login",Toast.LENGTH_SHORT);
 					toast.show();
@@ -78,21 +78,21 @@ public class MainActivity extends Activity implements OnClickListener {
 					startActivity(i);
 				}
 				else{
-					dialog.dismiss();
+					//dialog.dismiss();
 					Toast toast = Toast.makeText(getApplicationContext(), 
 							"Your username and/or password is incorrect.",Toast.LENGTH_LONG);
 					toast.setGravity(Gravity.TOP, 0, 0);
 					toast.show();
 				}
 			} catch (InterruptedException e) {
-				dialog.dismiss();
+				//dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
 				toast.show();
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				dialog.dismiss();
+				//dialog.dismiss();
 				Toast toast = Toast.makeText(getApplicationContext(), 
 						"Something went wrong! Please try again.",Toast.LENGTH_SHORT);
 				toast.setGravity(Gravity.TOP, 0, 0);
